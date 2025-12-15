@@ -1,8 +1,15 @@
 # claude-safe
 
-Run Claude Code in isolated Docker containers. Protect your system from supply chain attacks.
+A shell command that runs Claude Code inside an isolated Docker container.
 
-## The Problem
+```bash
+cd ~/my-project
+claude-safe
+```
+
+That's it. Claude starts, but it can only see your project folder. Your SSH keys, cloud credentials, and other files are invisible and protected.
+
+## Why?
 
 When you run `npm install some-package`, that package can execute arbitrary code with your user's full permissions:
 
@@ -11,11 +18,11 @@ When you run `npm install some-package`, that package can execute arbitrary code
 - Access browser data and cookies
 - Read/modify any file your user can access
 
-**This is not theoretical.** Supply chain attacks on npm packages happen regularly, and the risk grows as dependencies multiply.
+**This is not theoretical.** Supply chain attacks on npm packages happen regularly.
 
-## The Solution
+## How it works
 
-`claude-safe` runs Claude Code inside an isolated Docker container:
+`claude-safe` runs Claude inside a Docker container that can only access your current folder:
 
 ```
 ┌─────────────────────────────────────────┐
