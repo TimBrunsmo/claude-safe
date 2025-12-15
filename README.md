@@ -9,6 +9,8 @@ claude-safe
 
 That's it. Claude starts, but it can only see your project folder. Your SSH keys, cloud credentials, and other files are invisible and protected.
 
+Develop in peace knowing that even if a malicious package gets installed, it's trapped inside the container and can't touch the rest of your system.
+
 ## Why?
 
 When you run `npm install some-package`, that package can execute arbitrary code with your user's full permissions:
