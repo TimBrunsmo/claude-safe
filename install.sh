@@ -107,12 +107,25 @@ function claude-safe --description "Run Claude Code in an isolated Docker contai
     set -l name "claude-safe-"(echo $project | tr -cd '[:alnum:]-_')
     docker rm -f $name 2>/dev/null
 
+    # Ask for port
+    read -P "Expose port for web server (enter to skip): " port
+
+    set -l port_flag ""
+    if test -n "$port"
+        set port_flag "-p $port:$port"
+    end
+
+    echo ""
     echo "Starting isolated Claude environment..."
     echo "   Project: $project"
+    if test -n "$port"
+        echo "   Port: localhost:$port"
+    end
     echo ""
 
     docker run -it --rm \
         --name $name \
+        $port_flag \
         -v "$PWD:/workspace" \
         -v "$HOME/.claude:/home/developer/.claude" \
         -w /workspace \
@@ -138,12 +151,25 @@ claude-safe() {
     local name="claude-safe-${project//[^a-zA-Z0-9_-]/}"
     docker rm -f "$name" 2>/dev/null
 
+    # Ask for port
+    read -p "Expose port for web server (enter to skip): " port
+
+    local port_flag=""
+    if [ -n "$port" ]; then
+        port_flag="-p $port:$port"
+    fi
+
+    echo ""
     echo "Starting isolated Claude environment..."
     echo "   Project: $project"
+    if [ -n "$port" ]; then
+        echo "   Port: localhost:$port"
+    fi
     echo ""
 
     docker run -it --rm \
         --name "$name" \
+        $port_flag \
         -v "$PWD:/workspace" \
         -v "$HOME/.claude:/home/developer/.claude" \
         -w /workspace \
@@ -169,12 +195,25 @@ claude-safe() {
     local name="claude-safe-${project//[^a-zA-Z0-9_-]/}"
     docker rm -f "$name" 2>/dev/null
 
+    # Ask for port
+    read "port?Expose port for web server (enter to skip): "
+
+    local port_flag=""
+    if [[ -n "$port" ]]; then
+        port_flag="-p $port:$port"
+    fi
+
+    echo ""
     echo "Starting isolated Claude environment..."
     echo "   Project: $project"
+    if [[ -n "$port" ]]; then
+        echo "   Port: localhost:$port"
+    fi
     echo ""
 
     docker run -it --rm \
         --name "$name" \
+        $port_flag \
         -v "$PWD:/workspace" \
         -v "$HOME/.claude:/home/developer/.claude" \
         -w /workspace \

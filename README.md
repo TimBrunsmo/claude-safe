@@ -24,8 +24,6 @@ When you run `npm install some-package`, that package can execute arbitrary code
 
 ## How it works
 
-`claude-safe` runs Claude inside a Docker container that can only access your current folder:
-
 ```
 ┌─────────────────────────────────────────┐
 │           Your System (Host)            │
@@ -44,8 +42,29 @@ When you run `npm install some-package`, that package can execute arbitrary code
 │  │  Malicious code is trapped      │    │
 │  │                                 │    │
 │  └─────────────────────────────────┘    │
+│              ↑                          │
+│         localhost:3000                  │
+│     (only if you allow it)              │
 └─────────────────────────────────────────┘
 ```
+
+## Web Development
+
+When you run `claude-safe`, it asks if you want to expose a port:
+
+```
+Expose port for web server (enter to skip): 3000
+```
+
+**If you enter a port:**
+- Claude can start a dev server (Next.js, Vite, etc.)
+- You access it in Chrome at `localhost:3000`
+- This is the **only** way into the container
+
+**If you press enter (skip):**
+- No ports exposed
+- Complete network isolation
+- Use this when you don't need a web server
 
 ## Install
 
@@ -99,7 +118,7 @@ claude-safe
 | `claude-safe` | Run Claude Code in an isolated Docker container |
 | `claude-safe-build` | Rebuild the Docker image |
 
-## Security Features
+## Security
 
 - **`--cap-drop=ALL`** - Removes all Linux capabilities
 - **`--security-opt no-new-privileges:true`** - Prevents privilege escalation
@@ -107,13 +126,13 @@ claude-safe
 - **Minimal image** - Based on `node:22-slim`
 - **Auto-cleanup** - Container removed on exit
 
-### What's mounted
+### What's accessible
 
-Only two directories:
-1. **Your project folder** → `/workspace`
+1. **Your project folder** → mounted at `/workspace`
 2. **Claude config** → `~/.claude` (for auth persistence)
+3. **One port** → only if you specify it at startup
 
-Everything else is inaccessible.
+Everything else on your system is inaccessible.
 
 ### Verify isolation
 
