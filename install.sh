@@ -110,9 +110,9 @@ function claude-safe --description "Run Claude Code in an isolated Docker contai
     read -P "Expose port for web server (enter to skip): " port
     set port (string trim "$port")
 
-    set -l port_flag ""
+    set -l port_flag
     if test -n "$port"
-        set port_flag "-p $port:$port"
+        set port_flag -p "$port:$port"
     end
 
     echo ""
