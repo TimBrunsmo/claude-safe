@@ -63,11 +63,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd --create-home --shell /bin/bash --uid 1000 developer
-USER developer
+USER node
 
-ENV NPM_CONFIG_PREFIX=/home/developer/.npm-global
-ENV PATH="/home/developer/.npm-global/bin:${PATH}"
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH="/home/node/.npm-global/bin:${PATH}"
 
 RUN npm install -g @anthropic-ai/claude-code && npm cache clean --force
 
@@ -127,7 +126,7 @@ function claude-safe --description "Run Claude Code in an isolated Docker contai
         --name $name \
         $port_flag \
         -v "$PWD:/workspace" \
-        -v "$HOME/.claude:/home/developer/.claude" \
+        -v "$HOME/.claude:/home/node/.claude" \
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
@@ -171,7 +170,7 @@ claude-safe() {
         --name "$name" \
         $port_flag \
         -v "$PWD:/workspace" \
-        -v "$HOME/.claude:/home/developer/.claude" \
+        -v "$HOME/.claude:/home/node/.claude" \
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
@@ -215,7 +214,7 @@ claude-safe() {
         --name "$name" \
         $port_flag \
         -v "$PWD:/workspace" \
-        -v "$HOME/.claude:/home/developer/.claude" \
+        -v "$HOME/.claude:/home/node/.claude" \
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \

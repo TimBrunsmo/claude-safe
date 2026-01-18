@@ -122,7 +122,7 @@ claude-safe
 
 - **`--cap-drop=ALL`** - Removes all Linux capabilities
 - **`--security-opt no-new-privileges:true`** - Prevents privilege escalation
-- **Non-root user** - Runs as `developer` (UID 1000), not root
+- **Non-root user** - Runs as `node` (UID 1000), not root
 - **Minimal image** - Based on `node:22-slim`
 - **Auto-cleanup** - Container removed on exit
 
@@ -139,7 +139,7 @@ Everything else on your system is inaccessible.
 Inside the container:
 
 ```bash
-whoami              # → developer
+whoami              # → node
 ls /Users           # → No such file or directory
 ls ~/.ssh           # → No SSH keys
 env | grep -i aws   # → No credentials

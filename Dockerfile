@@ -16,15 +16,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# Create non-root user with explicit UID for consistent file permissions
-RUN useradd --create-home --shell /bin/bash --uid 1000 developer
-
-# Switch to non-root user
-USER developer
+# Use existing node user (UID 1000) from base image
+USER node
 
 # Configure npm to install global packages in user space
-ENV NPM_CONFIG_PREFIX=/home/developer/.npm-global
-ENV PATH="/home/developer/.npm-global/bin:${PATH}"
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH="/home/node/.npm-global/bin:${PATH}"
 
 # Install Claude Code
 RUN npm install -g @anthropic-ai/claude-code \
