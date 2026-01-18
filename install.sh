@@ -108,6 +108,7 @@ function claude-safe --description "Run Claude Code in an isolated Docker contai
 
     # Ask for port
     read -P "Expose port for web server (enter to skip): " port
+    set port (string trim "$port")
 
     set -l port_flag ""
     if test -n "$port"
@@ -152,6 +153,7 @@ claude-safe() {
 
     # Ask for port
     read -p "Expose port for web server (enter to skip): " port
+    port=$(echo "$port" | xargs)
 
     local port_flag=""
     if [ -n "$port" ]; then
@@ -196,6 +198,7 @@ claude-safe() {
 
     # Ask for port
     read "port?Expose port for web server (enter to skip): "
+    port=$(echo "$port" | xargs)
 
     local port_flag=""
     if [[ -n "$port" ]]; then
