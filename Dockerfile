@@ -29,5 +29,5 @@ RUN npm install -g @anthropic-ai/claude-code \
 
 WORKDIR /workspace
 
-# Update Claude Code on start, then run it
-ENTRYPOINT ["sh", "-c", "npm update -g @anthropic-ai/claude-code 2>/dev/null || true; exec claude"]
+# Update Claude Code on start, then run it with any passed arguments
+ENTRYPOINT ["sh", "-c", "npm update -g @anthropic-ai/claude-code 2>/dev/null || true; exec claude \"$@\"", "--"]

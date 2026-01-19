@@ -118,6 +118,25 @@ claude-safe
 | `claude-safe` | Run Claude Code in an isolated Docker container |
 | `claude-safe-build` | Rebuild the Docker image |
 
+## Tips
+
+### Passing arguments to Claude
+
+You can pass any Claude CLI arguments through to the container:
+
+```bash
+# Skip permission prompts (faster, less safe)
+claude-safe --dangerously-skip-permissions
+
+# Start with a specific prompt
+claude-safe --prompt "Fix all TypeScript errors"
+
+# Combine multiple flags
+claude-safe --dangerously-skip-permissions --prompt "Run tests"
+```
+
+Arguments are passed directly to the `claude` command inside the container.
+
 ## Security
 
 - **`--cap-drop=ALL`** - Removes all Linux capabilities

@@ -71,7 +71,7 @@ ENV PATH="/home/node/.npm-global/bin:${PATH}"
 RUN npm install -g @anthropic-ai/claude-code && npm cache clean --force
 
 WORKDIR /workspace
-ENTRYPOINT ["sh", "-c", "npm update -g @anthropic-ai/claude-code 2>/dev/null || true; exec claude"]
+ENTRYPOINT ["sh", "-c", "npm update -g @anthropic-ai/claude-code 2>/dev/null || true; exec claude \"$@\"", "--"]
 EOF
 
     info "Created ~/.claude/docker/Dockerfile.isolated"
@@ -131,7 +131,7 @@ function claude-safe --description "Run Claude Code in an isolated Docker contai
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
-        claude-isolated
+        claude-isolated $argv
 end
 
 function claude-safe-build --description "Rebuild the Docker image"
@@ -176,7 +176,7 @@ claude-safe() {
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
-        claude-isolated
+        claude-isolated "$@"
 }
 
 claude-safe-build() {
@@ -221,7 +221,7 @@ claude-safe() {
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
-        claude-isolated
+        claude-isolated "$@"
 }
 
 claude-safe-build() {
