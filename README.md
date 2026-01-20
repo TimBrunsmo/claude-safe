@@ -11,6 +11,50 @@ That's it. Claude starts, but it can only see your project folder. Your SSH keys
 
 Develop in peace knowing that even if a malicious package gets installed, it's trapped inside the container and can't touch the rest of your system.
 
+## Install
+
+**One command:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/timbrunsmo/claude-safe/main/install.sh | bash
+```
+
+This builds the Docker image and creates shell functions at `~/.claude/`.
+
+**Make it permanent** (add ONE line to your shell config):
+
+```bash
+# Fish - add to ~/.config/fish/config.fish:
+source ~/.claude/claude-safe.fish
+
+# Bash - add to ~/.bashrc:
+source ~/.claude/claude-safe.bash
+
+# Zsh - add to ~/.zshrc:
+source ~/.claude/claude-safe.zsh
+```
+
+Then reload your shell: `exec $SHELL` or open a new terminal.
+
+> ⚠️ **Without adding the source line, you'll need to run `source ~/.claude/claude-safe.fish` every time you open a new shell**
+
+**Optional:** Review the shell functions before adding them:
+```bash
+cat ~/.claude/claude-safe.fish  # or .bash or .zsh
+```
+
+## Usage
+
+| Command | Description |
+|---------|-------------|
+| `claude-safe` | Run Claude Code in an isolated Docker container |
+| `claude-safe-build` | Rebuild the Docker image |
+
+```bash
+cd ~/your-project
+claude-safe
+```
+
 ## Why?
 
 When you run `npm install some-package`, that package can execute arbitrary code with your user's full permissions:
@@ -66,58 +110,6 @@ Expose port for web server (enter to skip): 3000
 - Complete network isolation
 - Use this when you don't need a web server
 
-## Install
-
-### 1. Run the installer
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/timbrunsmo/claude-safe/main/install.sh | bash
-```
-
-This builds the Docker image and creates shell functions at `~/.claude/`.
-
-**The installer does NOT modify your shell config.** You do that yourself.
-
-### 2. Review the shell functions
-
-```bash
-# Fish
-cat ~/.claude/claude-safe.fish
-
-# Bash
-cat ~/.claude/claude-safe.bash
-
-# Zsh
-cat ~/.claude/claude-safe.zsh
-```
-
-### 3. Add to your shell config (if you trust it)
-
-```bash
-# Fish - add to ~/.config/fish/config.fish:
-source ~/.claude/claude-safe.fish
-
-# Bash - add to ~/.bashrc:
-source ~/.claude/claude-safe.bash
-
-# Zsh - add to ~/.zshrc:
-source ~/.claude/claude-safe.zsh
-```
-
-### 4. Reload and use
-
-```bash
-cd ~/your-project
-claude-safe
-```
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `claude-safe` | Run Claude Code in an isolated Docker container |
-| `claude-safe-build` | Rebuild the Docker image |
-
 ## Tips
 
 ### Passing arguments to Claude
@@ -137,7 +129,7 @@ claude-safe --dangerously-skip-permissions --prompt "Run tests"
 
 Arguments are passed directly to the `claude` command inside the container.
 
-## Security
+## Security Details
 
 - **`--cap-drop=ALL`** - Removes all Linux capabilities
 - **`--security-opt no-new-privileges:true`** - Prevents privilege escalation
