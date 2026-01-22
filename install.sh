@@ -70,6 +70,9 @@ ENV PATH="/home/node/.npm-global/bin:${PATH}"
 
 RUN npm install -g @anthropic-ai/claude-code && npm cache clean --force
 
+# Create .claude directory with proper ownership for volume mounts
+RUN mkdir -p /home/node/.claude
+
 WORKDIR /workspace
 ENTRYPOINT ["sh", "-c", "npm update -g @anthropic-ai/claude-code 2>/dev/null || true; exec claude \"$@\"", "--"]
 EOF
@@ -127,7 +130,7 @@ function claude-safe --description "Run Claude Code in an isolated Docker contai
         --name $name \
         $port_flag \
         -v "$PWD:/workspace" \
-        -v "$HOME/.claude:/home/node/.claude" \
+        -v "claude-safe-$project:/home/node/.claude" \
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
@@ -172,7 +175,7 @@ claude-safe() {
         --name "$name" \
         $port_flag \
         -v "$PWD:/workspace" \
-        -v "$HOME/.claude:/home/node/.claude" \
+        -v "claude-safe-$project:/home/node/.claude" \
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \
@@ -217,7 +220,7 @@ claude-safe() {
         --name "$name" \
         $port_flag \
         -v "$PWD:/workspace" \
-        -v "$HOME/.claude:/home/node/.claude" \
+        -v "claude-safe-$project:/home/node/.claude" \
         -w /workspace \
         --cap-drop=ALL \
         --security-opt no-new-privileges:true \

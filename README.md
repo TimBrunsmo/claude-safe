@@ -112,6 +112,31 @@ Expose port for web server (enter to skip): 3000
 
 ## Tips
 
+### Using Plugins
+
+Claude-safe uses **per-project isolation**. Each project has its own credentials and plugins.
+
+**First time in a project:**
+1. Run `claude-safe` in your project directory
+2. Authenticate when prompted (enter your Anthropic API key)
+3. Add a marketplace:
+   ```
+   /plugin marketplace add https://github.com/anthropics/claude-plugins-official
+   ```
+4. Install plugins:
+   ```
+   /plugin install frontend-design@claude-plugins-official
+   ```
+5. Restart Claude Code (exit and run `claude-safe` again)
+6. Use the plugin: `/frontend-design`
+
+**Subsequent runs:**
+- Credentials persist automatically
+- Plugins remain installed
+- No re-authentication needed
+
+**Each project is isolated** - different projects have separate credentials and plugins. This ensures maximum security.
+
 ### Passing arguments to Claude
 
 You can pass any Claude CLI arguments through to the container:
@@ -140,10 +165,12 @@ Arguments are passed directly to the `claude` command inside the container.
 ### What's accessible
 
 1. **Your project folder** → mounted at `/workspace`
-2. **Claude config** → `~/.claude` (for auth persistence)
+2. **Per-project volume** → isolated Docker volume for credentials and plugins
 3. **One port** → only if you specify it at startup
 
 Everything else on your system is inaccessible.
+
+Each project gets its own isolated volume (`claude-safe-{project-name}`) that persists between sessions. Your host system's `~/.claude` directory is never mounted or accessed by the container.
 
 ### Verify isolation
 
@@ -164,10 +191,13 @@ env | grep -i aws   # → No credentials
 ## Uninstall
 
 1. Remove the source line from your shell config
-2. Remove files:
+2. Remove files and cleanup Docker resources:
    ```bash
    rm -rf ~/.claude/docker ~/.claude/claude-safe.*
    docker rmi claude-isolated
+
+   # Optional: Remove all per-project volumes
+   docker volume ls | grep claude-safe | awk '{print $2}' | xargs docker volume rm
    ```
 
 ## License
