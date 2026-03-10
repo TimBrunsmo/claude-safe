@@ -24,18 +24,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             Review PR #${{ github.event.pull_request.number }} in the claude-safe repo.
-
             This project isolates Claude Code inside Docker containers for security.
-            Its core files are: Dockerfile, install.sh, and shell functions for Fish/Bash/Zsh.
-
-            Focus your review on:
-            1. Shell compatibility — does it work correctly across bash, zsh, and fish?
-            2. Docker security — are isolation guarantees preserved? (--cap-drop, --security-opt, non-root user, no credential mounts)
-            3. macOS and Linux compatibility
-            4. install.sh correctness — idempotency, error handling, edge cases
-            5. Any regressions to the security model described in README.md
-
+            Core files are: Dockerfile, install.sh, and shell functions for Fish/Bash/Zsh.
+            Focus on: shell compatibility, Docker security, macOS/Linux compatibility, and install.sh correctness.
             Post your findings as a comment on the PR.
-          claude_args: |
-            --allowedTools "Bash(gh pr view:*),Bash(gh pr comment:*),Bash(gh pr diff:*)"
-            --max-turns 5
