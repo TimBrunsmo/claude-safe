@@ -26,24 +26,7 @@ jobs:
           prompt: |
             PR #${{ github.event.pull_request.number }} was just merged into claude-safe.
             PR title: ${{ github.event.pull_request.title }}
-
             Check what changed (run: git diff HEAD~1 HEAD) and read the current README.md.
-
-            Update README.md ONLY if the merged changes introduce or modify:
-            - New shell support (beyond fish/bash/zsh)
-            - New install steps or commands
-            - New Docker security flags or isolation behaviour
-            - New commands (beyond claude-safe and claude-safe-build)
-            - Changes to what is or isn't accessible inside the container
-
+            Update README.md ONLY if the merged changes introduce or modify new shell support, install steps, Docker security flags, commands, or container access rules.
             If no update is needed, do nothing.
-
-            If you do update the README, commit it with:
-            git config user.name "claude-bot"
-            git config user.email "claude-bot@users.noreply.github.com"
-            git add README.md
-            git commit -m "docs: auto-update README for PR #${{ github.event.pull_request.number }}"
-            git push
-          claude_args: |
-            --allowedTools "Read,Edit,Bash(git diff:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(git config:*)"
-            --max-turns 8
+            If you do update the README, commit it directly with a message like "docs: auto-update README for PR #${{ github.event.pull_request.number }}".
